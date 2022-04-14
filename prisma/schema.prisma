@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pack {
+  id            String    @id
+  parentId      String?   @map("parent_id")
+  name          String
+  position      Int
+  cyclePosition Int       @map("cycle_position")
+  availableAt   DateTime? @map("available_at")
+  known         Int
+  total         Int
+
+  cards    Card[]
+  parent   Pack?  @relation("PackToPack", fields: [parentId], references: [id])
+  children Pack[] @relation("PackToPack")
+  @@map("packs")
+}
+
+model Card {
+  id            String   @id
+  packId        String   @map("pack_id")
+  name          String
+  cost          Int?
+  quantity      Int
+  traits        String[]
+  factionName   String   @map("faction_name")
+  encounterName String?  @map("encounter_name")
+  typeName      String   @map("type_name")
+  position      Int
+  doubleSided   Boolean  @map("double_sided")
+  imageSrc      String?  @map("image_src")
+  backImageSrc  String?  @map("back_image_src")
+
+  pack Pack @relation(fields: [packId], references: [id])
+  @@map("cards")
+}
