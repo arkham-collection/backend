@@ -28,6 +28,7 @@ export type RawCard = {
   name: string
   real_name: string
   cost: number
+  xp?: number
   text: string
   real_text: string
   quantity: number

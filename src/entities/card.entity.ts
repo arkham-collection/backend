@@ -14,6 +14,9 @@ export class CardEntity implements Card {
   @ApiProperty({ example: 0 })
   public cost: number | null
 
+  @ApiProperty({ example: 0 })
+  public xp: number | null
+
   @ApiProperty({ example: 1 })
   public quantity: number
 

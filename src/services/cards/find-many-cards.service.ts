@@ -7,6 +7,7 @@ import pipe from "src/utils/pipe"
 type QueryObject = Prisma.CardFindManyArgs
 type Data = {
   name?: string
+  xp?: number[]
   traits?: string[]
   packIds?: string[]
   typeNames?: string[]
@@ -29,6 +30,7 @@ export class FindManyCardsService {
     const queryObject: QueryObject = pipe<Data, QueryObject>(data, {})
       .yieldSelf(this.traitsClause)
       .yieldSelf(this.nameClause)
+      .yieldSelf(this.xpClause)
       .yieldSelf(this.packIdsClause)
       .yieldSelf(this.typeNamesClause)
       .yieldSelf(this.factionNamesClause)
@@ -47,6 +49,17 @@ export class FindManyCardsService {
         ...queryObject.where,
         name: { equals: data.name },
       },
+    }
+  }
+
+  private xpClause(data: Data, queryObject: QueryObject): QueryObject {
+    if (!data.xp) return queryObject
+    return {
+      ...queryObject,
+      where: {
+        ...queryObject.where,
+        xp: { in: data.xp },
+      }
     }
   }
 

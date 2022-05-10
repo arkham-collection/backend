@@ -7,6 +7,7 @@ import { SortParamsDto } from "../sort-params.dto"
 function buildDto(data: Record<string, unknown> = {}): CardsQueryParamsDto {
   const generatedData = {
     name: "Pickpocketing",
+    xp: [0, 1],
     traits: ["Ally", "Creature"],
     pagination: { limit: "20", page: "2" },
     sort: "name,-cost",
@@ -175,6 +176,33 @@ describe("CardsQueryParamsDto", () => {
       const [error] = await validate(dto)
       expect(error.property).toEqual("typeNames")
       expect(error.constraints?.isString).toBeDefined()
+    })
+  })
+
+  describe("#xp", () => {
+    it("transforms into a number", () => {
+      const dto = buildDto({ xp: ["0", "2"] })
+      expect(dto.xp).toEqual([0, 2])
+    })
+
+    it("is optional", async () => {
+      const dto = buildDto({ xp: undefined })
+      const [error] = await validate(dto)
+      expect(error).toBeUndefined()
+    })
+
+    it("is an array", async () => {
+      const dto = buildDto({ xp: "1" })
+      const [error] = await validate(dto)
+      expect(error.property).toEqual("xp")
+      expect(error.constraints?.isArray).toBeDefined()
+    })
+
+    it("must each be a number", async () => {
+      const dto = buildDto({ xp: ["Investigator", "3"] })
+      const [error] = await validate(dto)
+      expect(error.property).toEqual("xp")
+      expect(error.constraints?.isNumber).toBeDefined()
     })
   })
 })

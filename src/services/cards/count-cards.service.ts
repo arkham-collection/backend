@@ -7,6 +7,7 @@ import pipe from "src/utils/pipe"
 type QueryObject = Prisma.CardCountArgs
 type Data = {
   name?: string
+  xp?: number[]
   traits?: string[]
   packIds?: string[]
   typeNames?: string[]
@@ -20,6 +21,7 @@ export class CountCardsService {
   public async execute(data: Data = {}): Promise<number> {
     const queryObject: QueryObject = pipe<Data, QueryObject>(data, {})
       .yieldSelf(this.nameClause)
+      .yieldSelf(this.xpClause)
       .yieldSelf(this.traitsClause)
       .yieldSelf(this.packIdsClause)
       .yieldSelf(this.typeNamesClause)
@@ -59,6 +61,17 @@ export class CountCardsService {
         ...queryObject.where,
         packId: { in: data.packIds },
       },
+    }
+  }
+
+  private xpClause(data: Data, queryObject: QueryObject): QueryObject {
+    if (!data.xp) return queryObject
+    return {
+      ...queryObject,
+      where: {
+        ...queryObject.where,
+        xp: { in: data.xp },
+      }
     }
   }
 

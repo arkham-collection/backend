@@ -71,6 +71,16 @@ describe("FindManyCardsService", () => {
     })
   })
 
+  describe("xpClause", () => {
+    it("return cards when there xp is included", async () => {
+      const cards = await findManyCardsService.execute({
+        xp: [0, 1],
+      })
+
+      expect(cards).toHaveLength(64)
+    })
+  })
+
   describe("#packIdsClause", () => {
     it("returns cards when there packId is included", async () => {
       const cards = await findManyCardsService.execute({

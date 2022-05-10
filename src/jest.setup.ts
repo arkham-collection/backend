@@ -33,6 +33,7 @@ beforeAll(async () => {
       (card): Prisma.CardCreateManyInput => ({
         id: card.code,
         cost: card.cost,
+        xp: card.xp,
         packId: card.pack_code,
         name: card.real_name,
         quantity: card.quantity,

@@ -1,6 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { Transform, Type } from "class-transformer"
-import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import deserializeSortParams from "src/utils/deserializeSortParams"
 import { PaginationParamsDto } from "./pagination-params.dto"
 import { SortParamsDto } from "./sort-params.dto"
@@ -10,6 +16,15 @@ export class CardsQueryParamsDto {
   @IsString()
   @IsOptional()
   public name: string
+
+  @ApiProperty({ type: [Number], example: [0, 1], required: false })
+  @IsArray()
+  @IsNumber({}, { each: true })
+  @IsOptional()
+  @Transform(({ value }: { value: string[] }) =>
+    Array.isArray(value) ? value.map((v) => Number(v)) : value,
+  )
+  public xp: number[]
 
   @ApiProperty({
     type: [String],

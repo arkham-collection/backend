@@ -91,4 +91,23 @@ export class MetaController {
 
     return result.typeNames
   }
+
+  @Get("xp_values")
+  @ApiOkResponse({ type: String, isArray: true })
+  public async getXpValues(@Query() _?: EmptyDto): Promise<number[]> {
+    const [result] = await this.db.$queryRaw<
+      Array<{ xp: number[] }>
+    >(Prisma.sql`
+      WITH xp AS (
+        SELECT DISTINCT xp
+        FROM cards
+        WHERE xp IS NOT NULL
+        ORDER BY xp
+      )
+      SELECT ARRAY_AGG(xp) AS "xp"
+      FROM xp
+    `)
+
+    return result.xp
+  }
 }

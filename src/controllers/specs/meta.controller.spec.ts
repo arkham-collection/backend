@@ -14,11 +14,11 @@ describe("MetaController", () => {
 
   describe("#getTraits", () => {
     it("calls FindManyCardsService", async () => {
-      const findManyTraitsServcie = await module.resolve(FindManyTraitsService)
-      jest.spyOn(findManyTraitsServcie, "execute")
+      const findManyTraitsService = await module.resolve(FindManyTraitsService)
+      jest.spyOn(findManyTraitsService, "execute")
       await controller.getTraits()
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(findManyTraitsServcie.execute).toBeCalledTimes(1)
+      expect(findManyTraitsService.execute).toBeCalledTimes(1)
     })
   })
 })

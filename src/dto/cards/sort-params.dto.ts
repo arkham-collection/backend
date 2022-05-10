@@ -5,6 +5,7 @@ export class SortParamsDto {
   @IsEnum([
     "name",
     "cost",
+    "xp",
     "quantity",
     "factionName",
     "encounterName",

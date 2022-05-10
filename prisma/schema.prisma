@@ -28,6 +28,7 @@ model Card {
   packId        String   @map("pack_id")
   name          String
   cost          Int?
+  xp            Int?
   quantity      Int
   traits        String[]
   factionName   String   @map("faction_name")
