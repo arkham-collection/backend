@@ -9,6 +9,7 @@ export class SortParamsDto {
     "factionName",
     "encounterName",
     "typeName",
+    "packId",
     "position",
   ])
   public field: string
